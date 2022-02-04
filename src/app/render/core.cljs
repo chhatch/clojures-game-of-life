@@ -1,5 +1,5 @@
 (ns app.render.core
-  (:require [app.engine.core :refer [update-board flip-cell board-state]]))
+  (:require [app.engine.core :as engine :refer [update-board flip-cell board-state]]))
 
 
 (defn cell-onclick [y x cell-value]
@@ -22,3 +22,6 @@
 (defn board []
   [:div {:style {:display "flex"}}
    (map-indexed row @board-state)])
+
+(defn start-stop-button []
+  [:button {:on-click engine/start-stop-game} (if @engine/game-running "Stop" "Start")])
