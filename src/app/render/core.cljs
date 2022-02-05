@@ -4,11 +4,11 @@
 
 (defn cell-onclick [y x cell-atom]
   (fn []
-    (println y x @cell-atom)
-    (flip-cell cell-atom)))
+    (println (engine/cell-key y x) (engine/sum-adjacent y x) ((engine/cell-key y x) engine/cells-adjacent))
+    (engine/flip-cell cell-atom)))
 
 (defn select-cell-color [cell-value]
-  (if cell-value "white" "yellow"))
+  (if (= cell-value 0) "white" "yellow"))
 
 (defn cell-style [cell-value]
   {:background-color (select-cell-color cell-value) :height "10px" :width "10px" :cursor "pointer"})
