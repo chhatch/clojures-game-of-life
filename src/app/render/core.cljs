@@ -1,9 +1,11 @@
 (ns app.render.core
-  (:require [app.engine.core :as engine :refer [update-board flip-cell board-state]]))
+  (:require [app.engine.core :as engine :refer [rows cols flip-cell board-state]]))
 
 
-(defn cell-onclick [y x cell-value]
-  (fn [] (update-board (flip-cell y x))))
+(defn cell-onclick [y x cell-atom]
+  (fn []
+    (println y x @cell-atom)
+    (flip-cell cell-atom)))
 
 (defn select-cell-color [cell-value]
   (if cell-value "white" "yellow"))
@@ -11,17 +13,16 @@
 (defn cell-style [cell-value]
   {:background-color (select-cell-color cell-value) :height "10px" :width "10px" :cursor "pointer"})
 
-(defn cell [y]
-  (fn [x cell-value] ^{:key x}
-    [:div {:style (cell-style cell-value)
-           :on-click (cell-onclick y x cell-value)}]))
-
-(defn row [y row]
-  [:div {:key y} (map-indexed (cell y) row)])
+(defn cell [y x cell-atom]
+  ^{:key x} [:div {:style (cell-style @cell-atom)
+                   :on-click (cell-onclick y x cell-atom)}])
 
 (defn board []
-  [:div {:style {:display "flex"}}
-   (map-indexed row @board-state)])
+  [:div {:style {:display "flex" :flex-wrap "wrap" :width 1000}}
+   (doall (for [y (range rows)]
+            (doall (for [x (range cols)]
+                     (let [cell-atom ((keyword (str y "-" x)) board-state)]
+                       (cell y x cell-atom))))))])
 
 (defn start-stop-button []
   [:button {:on-click engine/start-stop-game} (if @engine/game-running "Stop" "Start")])
