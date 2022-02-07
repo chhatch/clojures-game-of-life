@@ -1,11 +1,12 @@
 (ns app.render.core
-  (:require [app.engine.core :as engine :refer [rows cols flip-cell board-state]]))
+  (:require [app.engine.core :as engine :refer [rows cols board-state]])
+  (:require [app.engine.utils :refer [cell-key flip-cell]]))
 
 
 (defn cell-onclick [y x cell-atom]
   (fn []
-    (println (engine/cell-key y x) (engine/sum-adjacent y x) ((engine/cell-key y x) engine/cells-adjacent))
-    (engine/flip-cell cell-atom)))
+    (println (cell-key y x) (engine/sum-adjacent y x) ((cell-key y x) engine/cells-adjacent))
+    (flip-cell cell-atom)))
 
 (defn select-cell-color [cell-value]
   (if (= cell-value 0) "white" "yellow"))
