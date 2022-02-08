@@ -1,7 +1,20 @@
-(ns app.engine.utils)
+(ns app.engine.utils
+  (:require [reagent.core :as r])
+  (:require [app.engine.state :refer [rows cols board-state]]))
+
+(def init-cell-values (repeatedly (* rows cols) #(r/atom 0)))
 
 (defn cell-key [y x]
   (keyword (str y "-" x)))
+
+(defn cell-value
+  ([cell-key] @(cell-key board-state))
+  ([y x] @((cell-key y x) board-state)))
+
+(def cell-keys (flatten
+                (for [y (range rows)]
+                  (for [x (range cols)]
+                    (cell-key y x)))))
 
 (defn flip-0-1 [n]
   (mod (inc n) 2))
@@ -29,3 +42,9 @@
               (cell-key down left)
               (cell-key here-y left)
               (cell-key up left)]))))
+
+(def cells-adjacent (apply assoc {} (interleave cell-keys (repeatedly (* rows cols) (gen-adjecent-keys rows cols)))))
+
+(defn sum-adjacent [y x]
+  (apply + (map cell-value ((cell-key y x) cells-adjacent))))
+(def init-board-state (apply assoc {} (interleave cell-keys init-cell-values)))
