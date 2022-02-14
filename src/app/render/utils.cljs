@@ -1,10 +1,11 @@
 (ns app.render.utils
-  (:require [app.engine.utils :refer [cell-key flip-cell sum-adjacent cells-adjacent]]))
+  (:require [app.engine.utils :refer [sum-adjacent flip-cell cell-key]]
+            [app.engine.state :refer [cells-adjacent board-state]]))
 
 
 (defn cell-onclick [y x cell-atom]
   (fn []
-    (println (cell-key y x) (sum-adjacent y x) ((cell-key y x) cells-adjacent))
+   ; (println (cell-key y x) ((sum-adjacent board-state cells-adjacent) y x) ((cell-key y x) cells-adjacent))
     (flip-cell cell-atom)))
 
 (defn select-cell-color [cell-value]
