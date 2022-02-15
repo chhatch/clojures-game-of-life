@@ -8,6 +8,7 @@
                    :on-click (cell-onclick y x cell-atom)}])
 
 (defn board []
+  (println "board rendered")
   [:div {:style {:display "flex" :flex-wrap "wrap" :width 1000}}
    (doall (for [y (range rows)]
             (doall (for [x (range cols)]
