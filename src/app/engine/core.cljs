@@ -22,7 +22,7 @@
 
 (defn start-loop []
   (go (while @game-running
-        (<! (timeout 250))
+        (<! (timeout 100))
         (doseq [cell (update-list)]
           (flip-cell cell)))))
 
