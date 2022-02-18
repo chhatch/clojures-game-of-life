@@ -1,5 +1,5 @@
 (ns app.render.utils
-  (:require [app.engine.utils :refer [sum-adjacent flip-cell cell-key]]
+  (:require [app.engine.utils :refer [sum-adjacent flip-cell get-cell-key]]
             [app.engine.state :refer [cells-adjacent board-state]]))
 
 
