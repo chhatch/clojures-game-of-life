@@ -1,7 +1,7 @@
 (ns app.engine.core
   (:require [cljs.core.async :refer [go timeout <!]]
             [clojure.string :as str])
-  (:require [app.engine.utils :refer [flip-cell sum-adjacent cell-value]])
+  (:require [app.engine.utils :refer [flip-cell sum-adjacent get-cell-value]])
   (:require [app.engine.state :refer [game-running cell-keys board-state cells-adjacent]]))
 
 (defn update-required [adjacent-sum cell-alive]
@@ -12,8 +12,8 @@
 (defn cell-should-update [board-state]
   (fn [updates cell-key]
     (let [[y x] (str/split (name cell-key) #"-")
-          adjacent-sum ((sum-adjacent board-state cells-adjacent) y x)
-          cell-alive (= ((cell-value board-state) y x) 1)
+          adjacent-sum ((sum-adjacent board-state cells-adjacent) cell-key)
+          cell-alive (= ((get-cell-value board-state) y x) 1)
           cell-atom (cell-key board-state)]
       (if (update-required adjacent-sum cell-alive) (conj updates cell-atom) updates))))
 
@@ -22,7 +22,7 @@
 
 (defn start-loop []
   (go (while @game-running
-        (<! (timeout 100))
+        (<! (timeout 0))
         (doseq [cell (update-list)]
           (flip-cell cell)))))
 
