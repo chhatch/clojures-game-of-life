@@ -7,6 +7,8 @@
   (fn ([cell-key] @(cell-key board-state))
     ([y x] @((get-cell-key y x) board-state))))
 
+(defn set-1 [] 1)
+(defn set-0 [] 0)
 
 (defn flip-0-1 [n]
   (mod (inc n) 2))
