@@ -4,8 +4,9 @@
   (:require [app.engine.state :refer [rows cols game-running board-state]]))
 
 (defn cell [y x cell-atom]
-  [:div {:style (cell-style @cell-atom)
-         :on-click (cell-onclick y x cell-atom)}])
+  (let [on-click (cell-onclick y x cell-atom)]
+    [:div {:style (cell-style @cell-atom)
+           :on-click on-click}]))
 
 (defn board []
   [:div {:style {:display "flex" :flex-wrap "wrap" :width 1000}}
